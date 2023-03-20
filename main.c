@@ -66,6 +66,15 @@
 /* Interrupt priority for SCB ISR */
 #define LIN_SCB_INT_PRIORITY    (2U)
 
+/* Define start position and number of bytes for input & output signals */
+/* One command byte received from Master */
+#define LIN_SIGNALINPUT_START_BYTE      (0u)
+#define LIN_SIGNALINPUT_NUM_OF_BYTES    (1u)
+
+/* 2 status bytes from Slave to Master - previous command and LED status */
+#define LIN_SIGNALOUTPUT_START_BYTE     (0u)
+#define LIN_SIGNALOUTPUT_NUM_OF_BYTES   (2u)
+
 /*Function prototypes used for this demo.*/
 void btn_interrupt_handler(void *handler_arg, cyhal_gpio_event_t event);
 
@@ -102,6 +111,10 @@ int main(void)
 {
 	SBC_ErrorCode sbc_err;
     cy_rslt_t result;
+
+    /* Local variables */
+    uint8_t dataReceived = 0u;
+    uint8_t dataArray[2] = { 0u, 0u };
 
     /* Initialize the device and board peripherals */
     result = cybsp_init() ;
@@ -166,6 +179,12 @@ int main(void)
     	CY_ASSERT(0);
     }
 
+    sbc_err = sbc_lin_mode(LIN1, LIN_NORMAL_MODE);
+    if(sbc_err.flippedBitsMask)
+    {
+    	CY_ASSERT(0);
+    }
+
     /*SBC Watchdog Configuration*/
     sbc_err = sbc_configure_watchdog(TIME_OUT_WD, NO_WD_AFTER_CAN_LIN_WAKE, WD_1000MS);
     if(sbc_err.flippedBitsMask)
@@ -181,8 +200,72 @@ int main(void)
      	/*Feed the watchdog*/
     	sbc_wd_trigger();
 
-    	/*Delay 500 milliseconds*/
-    	 Cy_SysLib_Delay(500);
+        /***********************************************************************
+         * Check if "InFrame" frame is received from LIN Master
+         **********************************************************************/
+        if (true == l_flg_tst(MTB_LIN_0_FLAG_HANDLE_InFrame, &lin_context))
+        {
+            /* Read the 1st byte command received from the LIN Master */
+            l_bytes_rd(MTB_LIN_0_SIGNAL_HANDLE_SignalInput, \
+                    LIN_SIGNALINPUT_START_BYTE, \
+                    LIN_SIGNALINPUT_NUM_OF_BYTES, \
+                    &dataReceived, &lin_context);
+
+            /* Clear frame flag */
+            l_flg_clr(MTB_LIN_0_FLAG_HANDLE_InFrame, &lin_context);
+
+            /* Store the received command in dataArray */
+            dataArray[0] = dataReceived;
+
+            /* Send the previous command and the status of LEDs to LIN Master */
+            l_bytes_wr(MTB_LIN_0_SIGNAL_HANDLE_SignalOutput, \
+                    LIN_SIGNALOUTPUT_START_BYTE, \
+                    LIN_SIGNALOUTPUT_NUM_OF_BYTES, \
+                    dataArray, &lin_context);
+        }
+
+        /***********************************************************************
+         * Check if the data in "OutFrame" frame is sent to LIN Master
+         **********************************************************************/
+        if (true == l_flg_tst(MTB_LIN_0_FLAG_HANDLE_OutFrame, &lin_context))
+        {
+            /* Clear frame flag */
+            l_flg_clr(MTB_LIN_0_FLAG_HANDLE_OutFrame, &lin_context);
+        }
+
+
+        /*Turn the LEDs ON/OFF*/
+        switch(dataArray[0])
+        {
+        case 0x00:
+        	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
+        	break;
+        case 0x11:
+        	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_ON);
+        	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
+        	break;
+        case 0x22:
+        	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_ON);
+        	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
+        	break;
+        case 0x33:
+        	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_ON);
+        	break;
+        default:
+        	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
+        	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_ON);
+        	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
+
+        }
+
+
+
     }
 }
 
