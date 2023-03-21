@@ -54,11 +54,9 @@
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
-#include "mtbcfg_lin.h"
 #include "TLE926x.h"
+#include "mtbcfg_lin.h"
 
-/*Priority for button interrupts*/
-#define BTN_IRQ_PRIORITY		(0U)
 /*Priority for SBC interrupts*/
 #define SBC_IRQ_PRIORITY		(1U)
 /* Instance number */
@@ -75,17 +73,14 @@
 #define LIN_SIGNALOUTPUT_START_BYTE     (0u)
 #define LIN_SIGNALOUTPUT_NUM_OF_BYTES   (2u)
 
-/*Function prototypes used for this demo.*/
-void btn_interrupt_handler(void *handler_arg, cyhal_gpio_event_t event);
-
-cyhal_gpio_callback_data_t btn_data =
-{
-		.callback = btn_interrupt_handler,
-		.callback_arg = NULL,
-
-};
-
+/* Implement TLE9262 SBC Interrupt*/
 void sbc_interrupt_handler(void *handler_arg, cyhal_gpio_event_t event);
+/* Implement SCB ISR for LIN */
+static void LIN_Isr(void);
+/* Implement Inactivity ISR for LIN */
+static void LIN_InactivityIsr(void);
+/*LIN Initialization Function Prototype*/
+void LIN_start(void);
 
 /*TLE9262 SBC Interrupt Data*/
 cyhal_gpio_callback_data_t sbc_int_data =
@@ -93,12 +88,6 @@ cyhal_gpio_callback_data_t sbc_int_data =
 		.callback = sbc_interrupt_handler,
 		.callback_arg = NULL,
 };
-
-/* Implement SCB ISR for LIN */
-static void LIN_Isr(void);
-/* Implement Inactivity ISR for LIN */
-static void LIN_InactivityIsr(void);
-void LIN_start(void);
 
 /*SBC Power Supply Variables*/
 sbc_vcc3_on_t vcc3_supp;
@@ -113,8 +102,8 @@ int main(void)
     cy_rslt_t result;
 
     /* Local variables */
-    uint8_t dataReceived = 0u;
-    uint8_t dataArray[2] = { 0u, 0u };
+    uint8_t dataReceived = 0;
+    uint8_t dataArray[2] = {0};
 
     /* Initialize the device and board peripherals */
     result = cybsp_init() ;
@@ -133,17 +122,6 @@ int main(void)
     result = cyhal_gpio_init( USER_LED_BLUE, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
     if (result != CY_RSLT_SUCCESS)
     {CY_ASSERT(0);}
-
-    /*Initialize Buttons*/
-    result = cyhal_gpio_init(USER_BUTTON, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_NONE, false);
-    if (result != CY_RSLT_SUCCESS)
-    {CY_ASSERT(0);}
-
-    /*Register callback functions */
-    cyhal_gpio_register_callback(USER_BUTTON, &btn_data);
-
-    /* Enable falling edge interrupt events */
-    cyhal_gpio_enable_event(USER_BUTTON, CYHAL_GPIO_IRQ_FALL, BTN_IRQ_PRIORITY, true);
 
     __enable_irq();
 
@@ -193,6 +171,7 @@ int main(void)
     }
     Cy_SysLib_Delay(100);
 
+    /*Initialize LIN Stack*/
     LIN_start();
 
     for (;;)
@@ -233,39 +212,34 @@ int main(void)
             l_flg_clr(MTB_LIN_0_FLAG_HANDLE_OutFrame, &lin_context);
         }
 
-
-        /*Turn the LEDs ON/OFF*/
+        /* Switch the LEDs */
         switch(dataArray[0])
         {
-        case 0x00:
+        case 0x00: /*All LEDs OFF*/
         	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
         	break;
-        case 0x11:
+        case 0x11:  /*RED LED ON*/
         	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_ON);
         	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
         	break;
-        case 0x22:
+        case 0x22: /*GREEN LED ON*/
         	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_ON);
         	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
         	break;
-        case 0x33:
+        case 0x33: /*BLUE LED ON*/
         	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_ON);
         	break;
-        default:
+        default: /*All LEDs OFF*/
         	cyhal_gpio_write(USER_LED_RED, CYBSP_LED_STATE_OFF);
         	cyhal_gpio_write(USER_LED_GREEN, CYBSP_LED_STATE_ON);
         	cyhal_gpio_write(USER_LED_BLUE, CYBSP_LED_STATE_OFF);
-
         }
-
-
-
     }
 }
 
