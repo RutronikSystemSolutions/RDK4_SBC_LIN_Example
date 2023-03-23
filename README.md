@@ -1,6 +1,6 @@
 # RDK4 TLE9262-3BQX LIN Example
 
-Rutronik Development Kit 4 Programmable System-on-Chip CY8C4149AZE-S598 "System Basis Chip Local Interconnect Network" Code Example. 
+Rutronik Development Kit 4 Programmable System-on-Chip CY8C4149AZE-S598 " System Basis Chip Local Interconnect Network" Code Example. 
 
 This code example demonstrates a LIN 2.2 ISO17987 connectivity using TLE9262-3BQX System Basis Chip. 
 
@@ -23,7 +23,7 @@ This code example project has derived from the "[PSoC™ 4: Basic LIN slave exam
 
 The third party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library/lin_analyzer)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" was used to demonstrate the RDK4 LIN Slave.
 
-The software must be configured to work with 19.2 kbit/s baud rate, what is a maximum baud rate of the LIN 2.2.
+The software must be configured to work with 19.2 Kbit/s baud rate, what is a maximum baud rate of the LIN 2.2.
 
 <img src="images/LIN_Analyzer_Configuration.png" style="zoom:100%;" />
 
