@@ -6,7 +6,7 @@ This code example demonstrates a LIN 2.2 ISO17987 connectivity using TLE9262-3BQ
 
 This code example project has derived from the "[PSoC™ 4: Basic LIN slave example in MTB](https://github.com/Infineon/mtb-example-psoc4-lin-slave)". 
 
-<img src="images/rdk4_top.jpg" style="zoom:25%;" />
+<img src="images/lin_test.jpg" style="zoom:25%;" />
 
 ## Requirements
 
@@ -21,7 +21,7 @@ This code example project has derived from the "[PSoC™ 4: Basic LIN slave exam
 
 ### Operation
 
-The third party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library?swsearch=LIN Serial Analyzer v3.0.0#)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" was used to demonstrate the RDK4 LIN Slave.
+The third party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library/lin_analyzer)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" was used to demonstrate the RDK4 LIN Slave.
 
 The software must be configured to work with 19.2 kbit/s baud rate, what is a maximum baud rate of the LIN 2.2.
 
@@ -64,7 +64,7 @@ The LIN Signals are configured as it is shown in a figure below:
 
 <img src="images/LIN_Configurator_Signals.png" style="zoom:100%;" />
 
-The LIN wire and LIN RX signal are shown in figures below:
+The LIN wire and LIN RX signals are shown in figures below:
 
 <img src="images/lin_wire.png" style="zoom:100%;" />
 
