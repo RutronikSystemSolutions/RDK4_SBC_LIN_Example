@@ -169,7 +169,6 @@ int main(void)
     {
     	CY_ASSERT(0);
     }
-    Cy_SysLib_Delay(100);
 
     /*Initialize LIN Stack*/
     LIN_start();
@@ -267,7 +266,7 @@ void LIN_start(void)
     }
     /* Initializes the LIN instance that is specified by the context structure.
      * Choose appropriate pins for tx and rx direction from HAL library. */
-    if (l_ifc_init(LIN_IFC_HANDLE, &lin_context, LIN_TX, LIN_RX))
+    if (l_ifc_init(LIN_IFC_HANDLE, &lin_context, KITPROG_TX, KITPROG_RX))
     {
         /* Stop program execution if ifc init failed */
         CY_ASSERT(0U);
