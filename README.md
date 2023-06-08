@@ -44,6 +44,16 @@ For more details, see the [Eclipse IDE for ModusToolbox&trade; software user gui
 
 </details>
 
+
+
+### Hardware Setup
+
+The RDK4 Rev1 has dedicated LIN TX and RX pins on P7.0 and P7.1. However if the System Basis Chip TLE9262 needs to be controlled constantly over the SPI, there is a hardware conflict because these peripherals both needs the same Serial Communication Block scb[3].
+
+The code example has KITPROG_TX and KITPROG_RX pins configured as the LIN interface by default. The Solder Bridges SB34 and SB36 need to be shorted and KITPROG_RX pin needs to be connected with P7.0 as well as KITPROG_TX pin needs to be connected with P7.1 as it is shown in a figure below.
+
+<img src="images/lin_setup.png" style="zoom:100%;" />
+
 ### Operation
 
 The third party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library/lin_analyzer)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" was used to demonstrate the RDK4 LIN Slave.
