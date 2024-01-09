@@ -10,14 +10,15 @@ This code example project has derived from the "[PSoC™ 4: Basic LIN slave exam
 
 ## Requirements
 
-- [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v3.0
-- The latest hardware release RDK4 Rev1.
+- [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v3.1
+- The latest hardware release is RDK4 Rev2.
 
 ## Using the code example
 
 Create the project and open it using one of the following:
 
 <details><summary><b>In Eclipse IDE for ModusToolbox&trade; software</b></summary>
+
 
 
 
@@ -44,21 +45,11 @@ For more details, see the [Eclipse IDE for ModusToolbox&trade; software user gui
 
 </details>
 
-
-
-### Hardware Setup
-
-The RDK4 Rev1 has dedicated LIN TX and RX pins on P7.0 and P7.1. However if the System Basis Chip TLE9262 needs to be controlled constantly over the SPI, there is a hardware conflict because these peripherals both needs the same Serial Communication Block scb[3].
-
-The code example has KITPROG_TX and KITPROG_RX pins configured as the LIN interface by default. The Solder Bridges SB34 and SB36 need to be shorted and KITPROG_RX pin needs to be connected with P7.0 as well as KITPROG_TX pin needs to be connected with P7.1 as it is shown in a figure below.
-
-<img src="images/lin_setup.png" style="zoom:100%;" />
-
 ### Operation
 
-The third party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library/lin_analyzer)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" was used to demonstrate the RDK4 LIN Slave.
+The third-party software "[LIN Serial Analyzer v3.0.0](https://www.microchip.com/en-us/software-library/lin_analyzer)" and the PC adapter "[APGDT001 LIN SERIAL ANALYZER](https://www.microchip.com/en-us/development-tool/APGDT001)" were used to demonstrate the RDK4 LIN Slave.
 
-The software must be configured to work with 19.2 Kbit/s baud rate, what is a maximum baud rate of the LIN 2.2.
+The software must be configured to work with a 19.2 Kbit/s baud rate, which is the maximum baud rate of the LIN 2.2.
 
 <img src="images/LIN_Analyzer_Configuration.png" style="zoom:100%;" />
 
@@ -74,7 +65,7 @@ Please add the frames as it is shown below and set the "Enhanced Checksum Type".
 
 <img src="images/LIN_Serial_Analyzer_Debug_Tool.png" style="zoom:100%;" />
 
-If the firmware is already programmed into the RDK4 and LIN is connected to the APGDT001 adapter as well as  the "Battery" power supply , the commands can be transmitted by pressing "Send Once or Send Continuous".
+If the firmware is already programmed into the RDK4 and LIN is connected to the APGDT001 adapter as well as the "Battery" power supply, the commands can be transmitted by pressing "Send Once or Send Continuous".
 
 The first bite controls the RDK4 LEDs as it is shown below:
 
@@ -87,15 +78,15 @@ The first bite controls the RDK4 LEDs as it is shown below:
 
 The LIN configuration in ModusToolbox IDE is done using a tool called "LIN Configurator". 
 
-The LIN baud rate and protocol is configured as it is shown in a figure below:
+The LIN baud rate and protocol are configured as shown in the figure below:
 
 <img src="images/LIN_Configurator_General.png" style="zoom:100%;" />
 
-The LIN Frames are configured as it is shown in a figure below:
+The LIN Frames are configured as it is shown in the figure below:
 
 <img src="images/LIN_Configurator_Frames.png" style="zoom:100%;" />
 
-The LIN Signals are configured as it is shown in a figure below:
+The LIN Signals are configured as it is shown in the figure below:
 
 <img src="images/LIN_Configurator_Signals.png" style="zoom:100%;" />
 
@@ -105,11 +96,7 @@ The LIN wire and LIN RX signals are shown in figures below:
 
 <img src="images/lin_rx.png" style="zoom:100%;" />
 
-### Debugging
 
-If you successfully have imported the example, the debug configurations are already prepared to use with a the KitProg3, MiniProg4, or J-link. Open the ModusToolbox™ perspective and find the Quick Panel. Click on the desired debug launch configuration and wait for the programming to complete and the debugging process to start.
-
-<img src="images/debug_start.png" style="zoom:100%;" />
 
 ## Legal Disclaimer
 

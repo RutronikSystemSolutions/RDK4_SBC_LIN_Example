@@ -40,7 +40,7 @@ MTB_TYPE=COMBINED
 # To change the target, it is recommended to use the Library manager
 # ('make library-manager' from command line), which will also update Eclipse IDE launch
 # configurations.
-TARGET=RDK4
+TARGET=APP_RDK4
 
 # Name of application (used to derive name of final linked file).
 #
@@ -65,7 +65,7 @@ TOOLCHAIN=GCC_ARM
 #
 # If CONFIG is manually edited, ensure to update or regenerate launch configurations
 # for your IDE.
-CONFIG=Costum
+CONFIG=Custom
 
 # If set to "true" or "1", display full command-lines when building.
 VERBOSE=

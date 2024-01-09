@@ -7,7 +7,7 @@
 * Related Document: See README.md
 *
 *
-*  Created on: 2023-03-14
+*  Created on: 2024-01-09
 *  Company: Rutronik Elektronische Bauelemente GmbH
 *  Address: Jonavos g. 30, Kaunas 44262, Lithuania
 *  Author: GDR
@@ -266,7 +266,7 @@ void LIN_start(void)
     }
     /* Initializes the LIN instance that is specified by the context structure.
      * Choose appropriate pins for tx and rx direction from HAL library. */
-    if (l_ifc_init(LIN_IFC_HANDLE, &lin_context, KITPROG_TX, KITPROG_RX))
+    if (l_ifc_init(LIN_IFC_HANDLE, &lin_context, CYBSP_LIN_TX, CYBSP_LIN_RX))
     {
         /* Stop program execution if ifc init failed */
         CY_ASSERT(0U);
