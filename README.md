@@ -2,7 +2,7 @@
 
 Rutronik Development Kit 4 Programmable System-on-Chip CY8C4149AZE-S598 " System Basis Chip Local Interconnect Network" Code Example. 
 
-This code example demonstrates a LIN 2.2 ISO17987 connectivity using TLE9262-3BQX System Basis Chip. 
+This code example demonstrates a LIN 2.2 ISO17987 connectivity using a TLE9262-3BQX System Basis Chip. 
 
 This code example project has derived from the "[PSoC™ 4: Basic LIN slave example in MTB](https://github.com/Infineon/mtb-example-psoc4-lin-slave)". 
 
@@ -11,7 +11,7 @@ This code example project has derived from the "[PSoC™ 4: Basic LIN slave exam
 ## Requirements
 
 - [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v3.1
-- The latest hardware release is RDK4 Rev2.
+- The latest hardware release is [RDK4 Rev2](https://github.com/RutronikSystemSolutions/RDK4_Hardware_Files).
 
 ## Using the code example
 
