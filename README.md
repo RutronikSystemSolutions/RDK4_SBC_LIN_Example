@@ -13,6 +13,10 @@ This code example project has derived from the "[PSoC™ 4: Basic LIN slave exam
 - [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v3.1
 - The latest hardware release is [RDK4 Rev2](https://github.com/RutronikSystemSolutions/RDK4_Hardware_Files).
 
+## Supported toolchains (make variable 'TOOLCHAIN')
+
+- GNU Arm&reg; Embedded Compiler v11.3.1 (`GCC_ARM`) - Default value of `TOOLCHAIN`
+
 ## Using the code example
 
 Create the project and open it using one of the following:
@@ -97,6 +101,10 @@ The LIN wire and LIN RX signals are shown in figures below:
 <img src="images/lin_rx.png" style="zoom:100%;" />
 
 
+
+#### SBC Development Mode
+
+A special mode, called SBC Development Mode, is available during software development or debugging of the system. The watchdog counter is stopped and does not need to be triggered. This mode can be accessed by setting the TEST [**FO3**] pin to GND during SBC Init Mode.
 
 ## Legal Disclaimer
 
